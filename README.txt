@@ -1,1 +1,1 @@
-����һЩ QT demo
+﻿这是一些 QT demo
