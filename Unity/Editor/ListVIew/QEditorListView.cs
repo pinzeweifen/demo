@@ -30,6 +30,7 @@ public class QEditorListView : QAbstractEditorWindow
     public Action<int ,int> IndexChangedEvent;
     public Action<int> EditorIndexEvent;
     public Action<int> StartDragEvent;
+    public Action<bool> ContextEvent;
     public Action<QEditorListView, QEditorListView> EndDragEvent;//结束拖动事件
     
     public QEditorListView(EditorWindow window) : base(window) { }
@@ -114,6 +115,7 @@ public class QEditorListView : QAbstractEditorWindow
                         if (doubleClickIndex != i)
                         {
                             EditorGUILayout.LabelField(list[i], itemWidth, itemHeight);
+                            ContextMenuEvent(x, true);
                             SelectEvent(x);
                             if (isEditor) EditorEvent(x);
                             if (isDrag) DragEvent(x);
@@ -124,6 +126,7 @@ public class QEditorListView : QAbstractEditorWindow
                         }
                     }, i == index ? select : about);
                 }
+                ContextMenuEvent(EditorGUILayout.GetControlRect(), false);
             }, scrollPos, sorollHeight);
         }
     }
@@ -163,6 +166,13 @@ public class QEditorListView : QAbstractEditorWindow
     {
         list.Clear();
         w.Repaint();
+    }
+
+    private void ContextMenuEvent(Rect x, bool isItem)
+    {
+        if (QEditorEvent.IsContextClick(x))
+            if(ContextEvent!=null)
+                ContextEvent(isItem);
     }
     
     private void SelectEvent(Rect x)
