@@ -82,7 +82,6 @@ public class QEditorListView : QAbstractEditorWindow
                 }, i == index ? select : about);
             }
         }, scrollPos);
-        
     }
 
     public void Add(string value)
@@ -110,7 +109,7 @@ public class QEditorListView : QAbstractEditorWindow
 
     private void SelectEvent(Rect x)
     {
-        if (QEditorEvent.IsMouseDown() && x.Contains(QEditorEvent.MousePosition()))
+        if(QEditorEvent.IsMouseDown(x))
         {
             if (doubleClickIndex != -1)
                 doubleClickIndex = -1;
@@ -128,7 +127,7 @@ public class QEditorListView : QAbstractEditorWindow
 
     private void EditorEvent(Rect x)
     {
-        if (QEditorEvent.IsDoubleClick() && x.Contains(QEditorEvent.MousePosition()))
+        if(QEditorEvent.IsDoubleClick(x))
         {
             doubleClickIndex = i;
             if (EditorIndexEvent != null)
@@ -138,13 +137,14 @@ public class QEditorListView : QAbstractEditorWindow
 
     private void DragEvent(Rect x)
     {
-        if (!drag && QEditorEvent.IsMouseDrag() && x.Contains(QEditorEvent.MousePosition()))
+        if(!drag && QEditorEvent.IsMouseDrag(x))
         {
             drag = true;
             startView = this;
             if (StartDragEvent != null) StartDragEvent(i);
         }
-        if (drag && QEditorEvent.IsMouseUp() && x.Contains(QEditorEvent.MousePosition()))
+
+        if(drag && QEditorEvent.IsMouseUp(x))
         {
             endDragIndex = i;
             if (EndDragEvent != null)
