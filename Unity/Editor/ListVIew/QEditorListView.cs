@@ -16,11 +16,12 @@ public class QEditorListView : QAbstractEditorWindow
 
     private int width;
     private int height;
+    private int _itemWidth;
     private int _itemHeight;
-    private GUILayoutOption itemWidth = GUILayout.Width(150);
+    private GUILayoutOption scrollWidth = GUILayout.Width(150);
     private GUILayoutOption sorollHeight = GUILayout.ExpandHeight(true);
+    private GUILayoutOption itemWidth = GUILayout.Width(150);
     private GUILayoutOption itemHeight = GUILayout.ExpandHeight(false);
-    private bool isStartAdd = true;
 
     private static bool drag = false;           //是否拖动
     private static QEditorListView startView;   //开始拖动的列表对象
@@ -30,7 +31,7 @@ public class QEditorListView : QAbstractEditorWindow
     public Action<int ,int> IndexChangedEvent;
     public Action<int> EditorIndexEvent;
     public Action<int> StartDragEvent;
-    public Action<bool> ContextEvent;
+    public Action<bool, int> ContextEvent;
     public Action<QEditorListView, QEditorListView> EndDragEvent;//结束拖动事件
     
     public QEditorListView(EditorWindow window) : base(window) { }
@@ -64,13 +65,13 @@ public class QEditorListView : QAbstractEditorWindow
         set { doubleClickIndex = value; }
     }
 
-    public int Widht
+    public int Width
     {
         get { return width; }
         set
         {
             width = value;
-            itemWidth = GUILayout.Width(value);
+            scrollWidth = GUILayout.Width(value);
         }
     }
 
@@ -80,6 +81,16 @@ public class QEditorListView : QAbstractEditorWindow
         set {
             height = value;
             sorollHeight = GUILayout.Height(value);
+        }
+    }
+
+    public int ItemWidht
+    {
+        get { return _itemWidth; }
+        set
+        {
+            _itemWidth = value;
+            itemWidth = GUILayout.Width(value);
         }
     }
 
@@ -102,53 +113,45 @@ public class QEditorListView : QAbstractEditorWindow
     
     public override void Update()
     {
-        //如果什么都没有的时候占位
-        if (isStartAdd)
-            EditorGUILayout.LabelField("", itemWidth, itemHeight);
-        else
+        scrollPos = QEditorLayout.ScrollView(() =>
         {
-            scrollPos = QEditorLayout.ScrollView(() => {
-                for (i = 0; i < list.Count; i++)
+            for (i = 0; i < list.Count; i++)
+            {
+                QEditorLayout.Horizontal(x =>
                 {
-                    QEditorLayout.Horizontal(x =>
+                    if (doubleClickIndex != i)
                     {
-                        if (doubleClickIndex != i)
-                        {
-                            EditorGUILayout.LabelField(list[i], itemWidth, itemHeight);
-                            ContextMenuEvent(x, true);
-                            SelectEvent(x);
-                            if (isEditor) EditorEvent(x);
-                            if (isDrag) DragEvent(x);
-                        }
-                        else
-                        {
-                            list[doubleClickIndex] = EditorGUILayout.TextArea(list[doubleClickIndex], itemWidth, itemHeight);
-                        }
-                    }, i == index ? select : about);
-                }
-                ContextMenuEvent(EditorGUILayout.GetControlRect(), false);
-            }, scrollPos, sorollHeight);
-        }
+                        EditorGUILayout.LabelField(list[i], itemWidth, itemHeight);
+                        ContextMenuEvent(x, true,i);
+                        SelectEvent(x);
+                        if (isEditor) EditorEvent(x);
+                        if (isDrag) DragEvent(x);
+                    }
+                    else
+                    {
+                        list[doubleClickIndex] = EditorGUILayout.TextArea(list[doubleClickIndex], itemWidth, itemHeight);
+                    }
+                }, i == index ? select : about);
+            }
+            ContextMenuEvent(EditorGUILayout.GetControlRect(), false, -1);
+        }, scrollPos, scrollWidth, sorollHeight);
+
     }
 
     public void Add(string value)
     {
-        if (isStartAdd)
-        {
-            RemoveAll();
-            isStartAdd = false;
-        }
         list.Add(value);
+        w.Repaint();
+    }
+
+    public void Add<T>(T value)
+    {
+        list.Add(value.ToString());
         w.Repaint();
     }
 
     public void Adds(string[] list)
     {
-        if (isStartAdd)
-        {
-            RemoveAll();
-            isStartAdd = false;
-        }
         for (int i = 0; i < list.Length; i++)
         {
             this.list.Add(list[i]);
@@ -168,11 +171,11 @@ public class QEditorListView : QAbstractEditorWindow
         w.Repaint();
     }
 
-    private void ContextMenuEvent(Rect x, bool isItem)
+    private void ContextMenuEvent(Rect x, bool isItem, int index)
     {
         if (QEditorEvent.IsContextClick(x))
             if(ContextEvent!=null)
-                ContextEvent(isItem);
+                ContextEvent(isItem,index);
     }
     
     private void SelectEvent(Rect x)
