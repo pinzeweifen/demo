@@ -18,7 +18,10 @@ public class QEditorListView : QAbstractEditorWindow
     private static QEditorListView startView;   //开始拖动的列表对象
     private static string select = "LODSliderRangeSelected";//选择时的样式
     private static string about = "HelpBox";//默认样式
-    
+
+    public Action<int ,int> IndexChangedEvent;
+    public Action<int> EditorIndexEvent;
+    public Action<int> StartDragEvent;
     public Action<QEditorListView, QEditorListView> EndDragEvent;//结束拖动事件
     
     public QEditorListView(EditorWindow window) : base(window) { }
@@ -112,8 +115,12 @@ public class QEditorListView : QAbstractEditorWindow
             if (doubleClickIndex != -1)
                 doubleClickIndex = -1;
             else
+            {
+                if (IndexChangedEvent != null)
+                    IndexChangedEvent(index, i);
                 index = i;
-            
+            }
+                
             w.Repaint();
             if (drag) drag = false;
         }
@@ -124,6 +131,8 @@ public class QEditorListView : QAbstractEditorWindow
         if (QEditorEvent.IsDoubleClick() && x.Contains(QEditorEvent.MousePosition()))
         {
             doubleClickIndex = i;
+            if (EditorIndexEvent != null)
+                EditorIndexEvent(doubleClickIndex);
         }
     }
 
@@ -133,13 +142,18 @@ public class QEditorListView : QAbstractEditorWindow
         {
             drag = true;
             startView = this;
+            if (StartDragEvent != null) StartDragEvent(i);
         }
         if (drag && QEditorEvent.IsMouseUp() && x.Contains(QEditorEvent.MousePosition()))
         {
             endDragIndex = i;
-            if (EndDragEvent != null) EndDragEvent(startView, this);
+            if (EndDragEvent != null)
+                EndDragEvent(startView, this);
 
+            if (IndexChangedEvent != null)
+                IndexChangedEvent(index, i);
             index = i;
+
             w.Repaint();
             drag = false;
             endDragIndex = -1;
