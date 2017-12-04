@@ -18,9 +18,9 @@ public class QEditorListView : QAbstractEditorWindow
     private int height;
     private int _itemWidth;
     private int _itemHeight;
-    private GUILayoutOption scrollWidth = GUILayout.Width(150);
+    private GUILayoutOption scrollWidth = GUILayout.Width(250);
     private GUILayoutOption sorollHeight = GUILayout.ExpandHeight(true);
-    private GUILayoutOption itemWidth = GUILayout.Width(150);
+    private GUILayoutOption itemWidth = GUILayout.ExpandWidth(true);
     private GUILayoutOption itemHeight = GUILayout.ExpandHeight(false);
 
     private static bool drag = false;           //是否拖动
