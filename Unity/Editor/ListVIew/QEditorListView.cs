@@ -14,11 +14,19 @@ public class QEditorListView : QAbstractEditorWindow
     private int doubleClickIndex = -1;  //双击索引
     private List<string> list = new List<string>();//保存的所有值
 
+    private int width;
+    private int height;
+    private int _itemHeight;
+    private GUILayoutOption itemWidth = GUILayout.Width(150);
+    private GUILayoutOption sorollHeight = GUILayout.ExpandHeight(true);
+    private GUILayoutOption itemHeight = GUILayout.ExpandHeight(false);
+    private bool isStartAdd = true;
+
     private static bool drag = false;           //是否拖动
     private static QEditorListView startView;   //开始拖动的列表对象
     private static string select = "LODSliderRangeSelected";//选择时的样式
     private static string about = "HelpBox";//默认样式
-
+    
     public Action<int ,int> IndexChangedEvent;
     public Action<int> EditorIndexEvent;
     public Action<int> StartDragEvent;
@@ -55,58 +63,108 @@ public class QEditorListView : QAbstractEditorWindow
         set { doubleClickIndex = value; }
     }
 
+    public int Widht
+    {
+        get { return width; }
+        set
+        {
+            width = value;
+            itemWidth = GUILayout.Width(value);
+        }
+    }
+
+    public int Height
+    {
+        get { return height; }
+        set {
+            height = value;
+            sorollHeight = GUILayout.Height(value);
+        }
+    }
+
+    public int ItemHeight
+    {
+        get { return _itemHeight; }
+        set
+        {
+            _itemHeight = value;
+            itemHeight = GUILayout.Height(value);
+        }
+    }
+
     public string this[int index]
     {
         get { return list[index]; }
         set { list[index] = value; }
     }
 
+    
     public override void Update()
     {
-        scrollPos = QEditorLayout.ScrollView(() => {
-            for (i = 0; i < list.Count; i++)
-            {
-                QEditorLayout.Horizontal(x =>
+        //如果什么都没有的时候占位
+        if (isStartAdd)
+            EditorGUILayout.LabelField("", itemWidth, itemHeight);
+        else
+        {
+            scrollPos = QEditorLayout.ScrollView(() => {
+                for (i = 0; i < list.Count; i++)
                 {
-                    if (doubleClickIndex != i)
+                    QEditorLayout.Horizontal(x =>
                     {
-                        EditorGUILayout.LabelField(list[i]);
-                        SelectEvent(x);
-                        if (isEditor) EditorEvent(x);
-                        if (isDrag) DragEvent(x);
-                    }
-                    else
-                    {
-                        list[doubleClickIndex] = EditorGUILayout.TextArea(list[doubleClickIndex]);
-                    }
-                }, i == index ? select : about);
-            }
-        }, scrollPos);
+                        if (doubleClickIndex != i)
+                        {
+                            EditorGUILayout.LabelField(list[i], itemWidth, itemHeight);
+                            SelectEvent(x);
+                            if (isEditor) EditorEvent(x);
+                            if (isDrag) DragEvent(x);
+                        }
+                        else
+                        {
+                            list[doubleClickIndex] = EditorGUILayout.TextArea(list[doubleClickIndex], itemWidth, itemHeight);
+                        }
+                    }, i == index ? select : about);
+                }
+            }, scrollPos, sorollHeight);
+        }
     }
 
     public void Add(string value)
     {
+        if (isStartAdd)
+        {
+            RemoveAll();
+            isStartAdd = false;
+        }
         list.Add(value);
+        w.Repaint();
     }
 
     public void Adds(string[] list)
     {
-        for(int i = 0; i < list.Length; i++)
+        if (isStartAdd)
+        {
+            RemoveAll();
+            isStartAdd = false;
+        }
+        for (int i = 0; i < list.Length; i++)
         {
             this.list.Add(list[i]);
         }
+        w.Repaint();
     }
 
     public void RemoveAt(int index)
     {
         list.RemoveAt(index);
+        w.Repaint();
     }
 
     public void RemoveAll()
     {
         list.Clear();
+        w.Repaint();
     }
-
+    
     private void SelectEvent(Rect x)
     {
         if(QEditorEvent.IsMouseDown(x))
