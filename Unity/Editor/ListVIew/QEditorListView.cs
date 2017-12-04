@@ -17,7 +17,7 @@ public class QEditorListView : QAbstractEditorWindow
     private static bool drag = false;           //是否拖动
     private static QEditorListView startView;   //开始拖动的列表对象
     private static string select = "LODSliderRangeSelected";//选择时的样式
-    private static string about = "AboutWIndowLicenseLabel";//默认样式
+    private static string about = "HelpBox";//默认样式
     
     public Action<QEditorListView, QEditorListView> EndDragEvent;//结束拖动事件
     
@@ -76,10 +76,10 @@ public class QEditorListView : QAbstractEditorWindow
                     {
                         list[doubleClickIndex] = EditorGUILayout.TextArea(list[doubleClickIndex]);
                     }
-
                 }, i == index ? select : about);
             }
         }, scrollPos);
+        
     }
 
     public void Add(string value)
