@@ -39,7 +39,8 @@ public class QEditorGUI  {
     static QDataTimer dataTimer = new QDataTimer();
     public static string TimerEditor(string label, string timer)
     {
-        dataTimer.SetHMS(timer);
+        if (dataTimer.SetHMS(timer))
+            dataTimer.Init();
         
         QEditorLayout.Horizontal(x => {
             EditorGUILayout.PrefixLabel(label);

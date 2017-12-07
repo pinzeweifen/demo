@@ -44,6 +44,8 @@ public class QDataTimer
         SetHMS(h, m, s, ms);
     }
 
+    public void Init() { hour = minute = seconds = milliseconds = 0; }
+
     public void SetHMS(int h, int m, int s, int ms = 0)
     {
         Hour = h;
