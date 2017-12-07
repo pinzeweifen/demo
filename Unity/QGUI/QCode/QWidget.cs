@@ -39,7 +39,7 @@ public class QWidget : MonoBehaviour
     private void Awake()
     {
         rectTr = (RectTransform)transform;
-        setPosSize();
+        SetPosSize();
         canvasGroup = gameObject.AddComponent<CanvasGroup>();
         Disabled = disabled;
         parent = rectTr.parent.GetComponent<QWidget>();
@@ -47,11 +47,11 @@ public class QWidget : MonoBehaviour
         
         EventListener.Get(gameObject).onEnter += e => {
             ShowCursor(QEnum.Type.Enter);
-            enterEvent(new QEnterEvent());
+            EnterEvent(new QEnterEvent());
         };
         EventListener.Get(gameObject).onExit += e => {
             ShowCursor(QEnum.Type.Exit);
-            leaveEvent(new QExitEvent());
+            LeaveEvent(new QExitEvent());
         };
         EventListener.Get(gameObject).onMouseDown += e => {
             CreateMouseEvent(QEnum.Type.MouseButtonPress, QEnum.GetMouseButton(e.button));
@@ -60,69 +60,69 @@ public class QWidget : MonoBehaviour
             CreateMouseEvent(QEnum.Type.MouseButtonRelease, QEnum.GetMouseButton(e.button));
         };
         EventListener.Get(gameObject).onClick += e =>{
-            var click = new QMouseEvent(QEnum.Type.MouseButtonClick, QEnum.GetMouseButton(e.button), mouseLocalPos(), mouseScreenPos());
-            mouseClickEvent(click);
+            var click = new QMouseEvent(QEnum.Type.MouseButtonClick, QEnum.GetMouseButton(e.button), mouseLocalPos(), MouseScreenPos());
+            MouseClickEvent(click);
         };
         EventListener.Get(gameObject).onDoubleClick += e => {
-            var click = new QMouseEvent(QEnum.Type.MouseButtonDblClick, QEnum.GetMouseButton(e.button), mouseLocalPos(), mouseScreenPos());
-            mouseDoubleClickEvent(click);
+            var click = new QMouseEvent(QEnum.Type.MouseButtonDblClick, QEnum.GetMouseButton(e.button), mouseLocalPos(), MouseScreenPos());
+            MouseDoubleClickEvent(click);
         };
 
         EventListener.Get(gameObject).onBeginDrag += e => {
             ShowCursor(QEnum.Type.DragLeave);
-            dragLeaveEvent(new QDragEvent(mouseLocalPos(), mouseScreenPos()));
+            DragLeaveEvent(new QDragEvent(mouseLocalPos(), MouseScreenPos()));
         };
         EventListener.Get(gameObject).onDrag += e => {
             if (!isDrag)
-                mouseMoveEvent(new QMouseEvent(QEnum.Type.MouseMove, QEnum.GetMouseButton(e.button), mouseLocalPos(), mouseScreenPos()));
+                MouseMoveEvent(new QMouseEvent(QEnum.Type.MouseMove, QEnum.GetMouseButton(e.button), mouseLocalPos(), MouseScreenPos()));
             else
-                dragMoveEvent(new  QDragMoveEvent(mouseLocalPos(), mouseScreenPos()));
+                DragMoveEvent(new  QDragMoveEvent(mouseLocalPos(), MouseScreenPos()));
         };
         EventListener.Get(gameObject).onDrop += e => {
-            dropEvent(new QDropEvent(mouseLocalPos(), mouseScreenPos()));
+            DropEvent(new QDropEvent(mouseLocalPos(), MouseScreenPos()));
         };
         EventListener.Get(gameObject).onEndDrag += e => {
             ShowCursor(QEnum.Type.DragEnd);
-            dragEndEvent(new QDragEndEvent(mouseLocalPos(), mouseScreenPos()));
+            DragEndEvent(new QDragEndEvent(mouseLocalPos(), MouseScreenPos()));
         };
         EventListener.Get(gameObject).onScroll += e => {
-            wheelEvent(new QWheelEvent(e.scrollDelta));
+            WheelEvent(new QWheelEvent(e.scrollDelta));
         };
         EventListener.Get(gameObject).onSelect += e => {
             isSelect = true;
-            focusInEvent(new QFocusEvent(QEnum.Type.FocusIn));
+            FocusInEvent(new QFocusEvent(QEnum.Type.FocusIn));
         };
         EventListener.Get(gameObject).onDeselect += e => {
             isSelect = false;
-            focusOutEvent(new QFocusEvent(QEnum.Type.FocusOut));
+            FocusOutEvent(new QFocusEvent(QEnum.Type.FocusOut));
         };
 
         Initialization();
     }
 
     public virtual void Initialization() { }
-    protected virtual void closeEvent(QCloseEvent e) { }
-    protected virtual void mouseMoveEvent(QMouseEvent e) { }
-    protected virtual void mousePressEvent(QMouseEvent e) { }
-    protected virtual void mouseReleaseEvent(QMouseEvent e) { }
-    protected virtual void mouseClickEvent(QMouseEvent e) { }
-    protected virtual void mouseDoubleClickEvent(QMouseEvent e) { }
-    protected virtual void enterEvent(QEnterEvent e) { }
-    protected virtual void leaveEvent(QExitEvent e) { }
-    protected virtual void dragLeaveEvent(QDragEvent e) { }
-    protected virtual void dragMoveEvent(QDragMoveEvent e) { }
-    protected virtual void dropEvent(QDropEvent e) { }
-    protected virtual void dragEndEvent(QDragEndEvent e) { }
-    protected virtual void wheelEvent(QWheelEvent e) { }
-    protected virtual void keyPressEvent(QKeyEvent e) { }
-    protected virtual void keyReleaseEvent(QKeyEvent e) { }
-    protected virtual void showEvent(QShowEvent e) { }
-    protected virtual void resizeEvent(QResizeEvent e) { }
-    protected virtual void moveEvent(QMoveEvent e) { }
-    protected virtual void hideEvent(QHideEvent e) { }
-    protected virtual void focusInEvent(QFocusEvent e) { }
-    protected virtual void focusOutEvent(QFocusEvent e) { }
-    protected virtual void paintEvent() { }
+    protected virtual void CloseEvent(QCloseEvent e) { }
+    protected virtual void MouseMoveEvent(QMouseEvent e) { }
+    protected virtual void MousePressEvent(QMouseEvent e) { }
+    protected virtual void MouseReleaseEvent(QMouseEvent e) { }
+    protected virtual void MouseClickEvent(QMouseEvent e) { }
+    protected virtual void MouseDoubleClickEvent(QMouseEvent e) { }
+    protected virtual void EnterEvent(QEnterEvent e) { }
+    protected virtual void LeaveEvent(QExitEvent e) { }
+    protected virtual void DragLeaveEvent(QDragEvent e) { }
+    protected virtual void DragMoveEvent(QDragMoveEvent e) { }
+    protected virtual void DropEvent(QDropEvent e) { }
+    protected virtual void DragEndEvent(QDragEndEvent e) { }
+    protected virtual void WheelEvent(QWheelEvent e) { }
+    protected virtual void KeyPressEvent(QKeyEvent e) { }
+    protected virtual void KeyReleaseEvent(QKeyEvent e) { }
+    protected virtual void ShowEvent(QShowEvent e) { }
+    protected virtual void ResizeEvent(QResizeEvent e) { }
+    protected virtual void MoveEvent(QMoveEvent e) { }
+    protected virtual void HideEvent(QHideEvent e) { }
+    protected virtual void FocusInEvent(QFocusEvent e) { }
+    protected virtual void FocusOutEvent(QFocusEvent e) { }
+    protected virtual void PaintEvent() { }
 
     private bool isSelect = false;
     private void FixedUpdate()
@@ -143,17 +143,17 @@ public class QWidget : MonoBehaviour
         currentEvent = Event.current;
         if (isKeyDown && currentEvent.keyCode != KeyCode.None)
         {
-            keyPressEvent(new QKeyEvent(QEnum.Type.KeyPress, currentEvent.keyCode, currentEvent.modifiers));
+            KeyPressEvent(new QKeyEvent(QEnum.Type.KeyPress, currentEvent.keyCode, currentEvent.modifiers));
             isKeyDown = false;
         }
         if(isSelect && currentEvent.type == EventType.KeyUp && currentEvent.keyCode != KeyCode.None)
         {
-            keyReleaseEvent(new QKeyEvent(QEnum.Type.KeyRelease, currentEvent.keyCode, currentEvent.modifiers));
+            KeyReleaseEvent(new QKeyEvent(QEnum.Type.KeyRelease, currentEvent.keyCode, currentEvent.modifiers));
         }
-        paintEvent();
+        PaintEvent();
     }
 
-    public Vector2 size()
+    public Vector2 Size()
     {
         return rectTr.sizeDelta;
     }
@@ -162,7 +162,7 @@ public class QWidget : MonoBehaviour
     /// 相对坐标
     /// </summary>
     /// <returns></returns>
-    public Vector2 pos()
+    public Vector2 Pos()
     {
         return localPos;
     }
@@ -171,116 +171,116 @@ public class QWidget : MonoBehaviour
     /// 绝对坐标
     /// </summary>
     /// <returns></returns>
-    public Vector2 globalPos()
+    public Vector2 GlobalPos()
     {
         return new Vector2(transform.position.x, Screen.height - transform.position.y) - posSize;
     }
 
-    public void show()
+    public void Show()
     {
         gameObject.SetActive(true);
-        showEvent(new QShowEvent());
+        ShowEvent(new QShowEvent());
     }
 
-    public void hide()
+    public void Hide()
     {
         gameObject.SetActive(false);
-        hideEvent(new QHideEvent());
+        HideEvent(new QHideEvent());
     }
 
-    public void close()
+    public void Close()
     {
-        closeEvent(new QCloseEvent());
+        CloseEvent(new QCloseEvent());
         Destroy(gameObject);
     }
 
-    public void showMaximized()
+    public void ShowMaximized()
     {
-        normalSize = size();
+        normalSize = Size();
         normalPos = transform.position;
 
-        resize(Screen.width, Screen.height);
+        Resize(Screen.width, Screen.height);
         transform.position = posSize;
         maximized = true;
     }
 
-    public void showNormal()
+    public void ShowNormal()
     {
-        resize(normalSize.x, normalSize.y);
+        Resize(normalSize.x, normalSize.y);
         transform.position = normalPos;
     }
 
-    public void lower()
+    public void Lower()
     {
         rectTr.SetAsLastSibling();
     }
 
-    public void resize(float width, float height)
+    public void Resize(float width, float height)
     {
         var oldSize = rectTr.sizeDelta;
         rectTr.sizeDelta = new Vector2(width, height);
-        resizeEvent(new QResizeEvent( rectTr.sizeDelta,oldSize));
-        setPosSize();
+        ResizeEvent(new QResizeEvent( rectTr.sizeDelta,oldSize));
+        SetPosSize();
     }
 
-    public void move(float x, float y)
+    public void Move(float x, float y)
     {
         var old = rectTr.anchoredPosition;
         localPos = new Vector2(x, y);
         rectTr.anchoredPosition = new Vector2(x, -y);
-        moveEvent(new QMoveEvent(rectTr.anchoredPosition,old));
+        MoveEvent(new QMoveEvent(rectTr.anchoredPosition,old));
     }
 
-    public void setHidden(bool hidden)
+    public void SetHidden(bool hidden)
     {
-        setVisible(!hidden);
+        SetVisible(!hidden);
     }
     
-    public void setGeometry(float x, float y, float width, float height)
+    public void SetGeometry(float x, float y, float width, float height)
     {
-        move(x, y);
-        resize(width, height);
+        Move(x, y);
+        Resize(width, height);
     }
     
-    public void setDisabled(bool disabled)
+    public void SetDisabled(bool disabled)
     {
         this.disabled = disabled;
     }
     
-    public void setFocus()
+    public void SetFocus()
     {
         EventListener.SetFocus(gameObject);
     }
 
-    public virtual void setEnabled(bool enabled)
+    public virtual void SetEnabled(bool enabled)
     {
         Qenabled = enabled;
     }
 
-    public virtual void setVisible(bool visible)
+    public virtual void SetVisible(bool visible)
     {
         if (visible)
-            show();
+            Show();
         else
-            hide();
+            Hide();
     }
 
-    public bool isModal()
+    public bool IsModal()
     {
         return modal;
     }
 
-    public bool isEnabled()
+    public bool IsEnabled()
     {
         return Qenabled;
     }
 
-    public bool isDisabled()
+    public bool IsDisabled()
     {
         return disabled;
     }
 
-    public bool isMaximized()
+    public bool IsMaximized()
     {
         return maximized;
     }
@@ -290,7 +290,7 @@ public class QWidget : MonoBehaviour
         return gameObject.activeSelf;
     }
     
-    private void setPosSize()
+    private void SetPosSize()
     {
         posSize = new Vector2(
             rectTr.sizeDelta.x * rectTr.pivot.x,
@@ -304,41 +304,41 @@ public class QWidget : MonoBehaviour
 
         switch (type)
         {
-            case QEnum.Type.Enter:cursor.show();break;
-            case QEnum.Type.Exit:cursor.hide();break;
+            case QEnum.Type.Enter:cursor.Show();break;
+            case QEnum.Type.Exit:cursor.Hide();break;
             case QEnum.Type.MouseButtonPress:
             case QEnum.Type.DragLeave:
-                cursor.setState(QEnum.CursorState.Down);break;
+                cursor.SetState(QEnum.CursorState.Down);break;
             case QEnum.Type.MouseButtonRelease:
             case QEnum.Type.DragEnd:
-                cursor.setState(QEnum.CursorState.Hover); break;
+                cursor.SetState(QEnum.CursorState.Hover); break;
         }
     }
 
     private void CreateMouseEvent(QEnum.Type type, QEnum.MouseButton button)
     {
-        var mouseEvent = new QMouseEvent(type, button, mouseLocalPos(), mouseScreenPos());
+        var mouseEvent = new QMouseEvent(type, button, mouseLocalPos(), MouseScreenPos());
 
         switch (type)
         {
             case QEnum.Type.MouseButtonPress:
                 ShowCursor(type);
-                mousePressEvent(mouseEvent);
+                MousePressEvent(mouseEvent);
                 break;
             case QEnum.Type.MouseButtonRelease:
                 ShowCursor(type);
-                mouseReleaseEvent(mouseEvent);
+                MouseReleaseEvent(mouseEvent);
                 break;
         }
     }
 
-    private Vector2 mouseScreenPos()
+    private Vector2 MouseScreenPos()
     {
         return new Vector2(Input.mousePosition.x, -(Input.mousePosition.y - Screen.height));
     }
 
     private Vector2 mouseLocalPos()
     {
-        return mouseScreenPos() - globalPos();
+        return MouseScreenPos() - GlobalPos();
     }
 }

@@ -9,8 +9,9 @@ public class QCursor : MonoBehaviour {
     public Sprite down;
 
     private Image icon;
+    private Coroutine start;
     private QEnum.CursorState cursorState;
-
+    
     private void Awake()
     {
         icon = GetComponent<Image>();
@@ -18,21 +19,22 @@ public class QCursor : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void show()
+    public void Show()
     {
-        setState(QEnum.CursorState.Hover);
+        SetState(QEnum.CursorState.Hover);
         Cursor.visible = false;
         gameObject.SetActive(true);
-        StartCoroutine(CursorPos());
+        start = StartCoroutine(CursorPos());
     }
 
-    public void hide()
+    public void Hide()
     {
         Cursor.visible = true;
         gameObject.SetActive(false);
+        StopCoroutine(start);
     }
     
-    public void setState(QEnum.CursorState state)
+    public void SetState(QEnum.CursorState state)
     {
         cursorState = state;
         icon.sprite = state == QEnum.CursorState.Hover ? hover : down;

@@ -11,7 +11,7 @@ public class QEvent  {
         t = type;
     }
 
-    public QEnum.Type type()
+    public QEnum.Type Type()
     {
         return t;
     }
@@ -45,13 +45,13 @@ public class QMouseEvent : QEvent
         s = screenPos;
     }
 
-    public virtual QEnum.MouseButton button() { return b; }
-    public Vector2 pos() { return l; }
-    public float x() { return l.x; }
-    public float y() { return l.y; }
-    public Vector2 globalPos() { return s; }
-    public float globalx() { return s.x; }
-    public float globaly() { return s.y; }
+    public virtual QEnum.MouseButton Button() { return b; }
+    public Vector2 Pos() { return l; }
+    public float X() { return l.x; }
+    public float Y() { return l.y; }
+    public Vector2 GlobalPos() { return s; }
+    public float Globalx() { return s.x; }
+    public float Globaly() { return s.y; }
 }
 
 public class QDragEvent : QMouseEvent
@@ -69,7 +69,7 @@ public class QDragEvent : QMouseEvent
         b = button;
     }
 
-    public override QEnum.MouseButton button() { return b; }
+    public override QEnum.MouseButton Button() { return b; }
 }
 
 public class QDragMoveEvent : QMouseEvent
@@ -99,7 +99,7 @@ public class QWheelEvent : QEvent
         d = (int)delta.y;
     }
 
-    public int delta() { return d; }
+    public int Delta() { return d; }
 }
 
 public class QResizeEvent : QEvent
@@ -111,8 +111,8 @@ public class QResizeEvent : QEvent
         o = oldSize;
     }
 
-    public Vector2 size() { return s; }
-    public Vector2 oldSize() { return o; }
+    public Vector2 Size() { return s; }
+    public Vector2 OldSize() { return o; }
 }
 
 public class QShowEvent : QEvent
@@ -138,8 +138,8 @@ public class QMoveEvent : QEvent
         s = size;
         o = oldSize;
     }
-    public Vector2 size() { return s; }
-    public Vector2 oldSize() { return o; }
+    public Vector2 Size() { return s; }
+    public Vector2 OldSize() { return o; }
 }
 
 public class QFocusEvent : QEvent
@@ -156,6 +156,6 @@ public class QKeyEvent : QEvent
         k = keyCode;
         m = modifiers;
     }
-    public KeyCode key() { return k; }
-    public EventModifiers modifiers() { return m; }
+    public KeyCode Key() { return k; }
+    public EventModifiers Modifiers() { return m; }
 }

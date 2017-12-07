@@ -9,19 +9,19 @@ public class Test : QWidget {
         Disabled = false;//关闭键盘和鼠标输入
     }
 
-    protected override void keyPressEvent(QKeyEvent e)
+    protected override void KeyPressEvent(QKeyEvent e)
     {
-        Debug.Log(e.key());
+        Debug.Log(e.Key());
     }
 
-    protected override void keyReleaseEvent(QKeyEvent e)
+    protected override void KeyReleaseEvent(QKeyEvent e)
     {
-        Debug.Log((e.modifiers() & EventModifiers.Shift )!= 0);
+        Debug.Log((e.Modifiers() & EventModifiers.Shift )!= 0);
     }
 
-    protected override void mouseClickEvent(QMouseEvent e)
+    protected override void MouseClickEvent(QMouseEvent e)
     {
-        Debug.Log(e.pos());
-        Debug.Log(e.globalx());
+        Debug.Log(e.Pos());
+        Debug.Log(e.Globalx());
     }
 }
