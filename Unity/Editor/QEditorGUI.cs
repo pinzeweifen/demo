@@ -36,11 +36,11 @@ public class QEditorGUI  {
     }
 
     static float startWidth;
-    static QDataTimer dataTimer = new QDataTimer();
-    public static string TimerEditor(string label, string timer)
+    static QTimeData timeData = new QTimeData();
+    public static string TimerEditor(string label, string time)
     {
-        if (dataTimer.SetHMS(timer))
-            dataTimer.Init();
+        if (timeData.SetHMS(time))
+            timeData.Init();
         
         QEditorLayout.Horizontal(x => {
             EditorGUILayout.PrefixLabel(label);
@@ -49,30 +49,30 @@ public class QEditorGUI  {
                 x2.width = 15;
                 #region 时
                 if (QEditorEvent.IsScrollWhell(x2))
-                    dataTimer.Hour += TimerEditorDalta();
+                    timeData.Hour += TimerEditorDalta();
                 #endregion
                 #region 分
                 x2.x += 20;
                 if (QEditorEvent.IsScrollWhell(x2))
-                    dataTimer.Minute += TimerEditorDalta();
+                    timeData.Minute += TimerEditorDalta();
                 #endregion
                 #region 秒
                 x2.x += 20;
                 if (QEditorEvent.IsScrollWhell(x2))
-                    dataTimer.Seconds += TimerEditorDalta();
+                    timeData.Seconds += TimerEditorDalta();
                 #endregion
                 #region 毫秒
                 x2.x += 18;
                 x2.width = startWidth - 58;
                 if (QEditorEvent.IsScrollWhell(x2))
-                    dataTimer.Milliseconds += TimerEditorDalta();
+                    timeData.Milliseconds += TimerEditorDalta();
                 #endregion
-                timer = EditorGUILayout.TextField(dataTimer.ToString());
+                time = EditorGUILayout.TextField(timeData.ToString());
             });
         });
-        if (dataTimer.SetHMS(timer))
-            timer = dataTimer.ToString();
-        return timer;
+        if (timeData.SetHMS(time))
+            time = timeData.ToString();
+        return time;
     }
 
     private static int TimerEditorDalta()

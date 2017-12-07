@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-public class QDataTimer
+public class QTimeData
 {
     private int hour=0;
     private int minute=0;
@@ -44,14 +44,14 @@ public class QDataTimer
         }
     }
 
-    public QDataTimer() { }
+    public QTimeData() { }
 
-    public QDataTimer(string timer)
+    public QTimeData(string timer)
     {
         SetHMS(timer);
     }
 
-    public QDataTimer(int h, int m, int s, int ms=0)
+    public QTimeData(int h, int m, int s, int ms=0)
     {
         SetHMS(h, m, s, ms);
     }
