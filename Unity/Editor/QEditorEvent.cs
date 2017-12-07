@@ -14,6 +14,11 @@ public class QEditorEvent
 
     #region public function
 
+    public static void Use()
+    {
+        Event.current.Use();
+    }
+
     public static Vector2 MousePosition()
     {
         return Event.current.mousePosition;
@@ -58,7 +63,7 @@ public class QEditorEvent
     {
         return Event.current.type == EventType.keyDown;
     }
-
+    
     public static bool IsKeyUp()
     {
         return Event.current.type == EventType.KeyUp;
@@ -68,7 +73,7 @@ public class QEditorEvent
     {
         return Event.current.clickCount == 2;
     }
-
+    
     public static bool IsContextClick()
     {
         return Event.current.type == EventType.ContextClick;
@@ -87,6 +92,11 @@ public class QEditorEvent
     public static bool IsMouseMove()
     {
         return Event.current.type == EventType.mouseMove;
+    }
+
+    public static bool IsScrollWhell()
+    {
+        return Event.current.type == EventType.ScrollWheel;
     }
 
     public static bool IsMouseDrag()
@@ -129,6 +139,12 @@ public class QEditorEvent
         return IsRectContains(rect);
     }
 
+    public static bool IsMouseDrag(Rect rect)
+    {
+        if (!IsMouseDrag()) return false;
+        return IsRectContains(rect);
+    }
+
     public static bool IsMouseDown(Rect rect)
     {
         if (!IsMouseDown()) return false;
@@ -147,6 +163,12 @@ public class QEditorEvent
         return IsRectContains(rect);
     }
 
+    public static bool IsScrollWhell(Rect rect)
+    {
+        if (!IsScrollWhell()) return false;
+        return IsRectContains(rect);
+    }
+    
     public static bool IsDragPerform(Rect rect)
     {
         if ((Event.current.type == EventType.DragPerform
@@ -171,9 +193,9 @@ public class QEditorEvent
         return Event.current.delta.y;
     }
 
-    public static KeyCode GetKeyCode()
+    public static bool GetKeyCode(KeyCode key)
     {
-        return Event.current.keyCode;
+        return Event.current.keyCode == key;
     }
 
     public static Mouse GetButton()
