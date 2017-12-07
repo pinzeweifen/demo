@@ -69,7 +69,10 @@ public class QEditorGUI  {
                 timer = EditorGUILayout.TextField(dataTimer.ToString());
             });
         });
-        
+        if (dataTimer.SetHMS(timer))
+        {
+            timer = dataTimer.ToString();
+        }
         return timer;
     }
 }

@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
+﻿using System.Text.RegularExpressions;
 
 public class QDataTimer
 {
-    private int hour;
-    private int minute;
-    private int seconds;
-    private int milliseconds;
+    private int hour=0;
+    private int minute=0;
+    private int seconds=0;
+    private int milliseconds=0;
     private static Regex regex = new Regex("(\\d{2}:){3}\\d+");
     
     public int Hour
@@ -59,13 +56,9 @@ public class QDataTimer
     }
 
     private static string[] tmp;
-    public void SetHMS(string timer)
+    public bool SetHMS(string timer)
     {
-        if (!regex.IsMatch(timer))
-        {
-            Hour = Minute = Seconds = Milliseconds = 0;
-            return;
-        }
+        if (!regex.IsMatch(timer)) return true;
 
         tmp = timer.Split(':');
         Hour = int.Parse(tmp[0]);
@@ -75,6 +68,7 @@ public class QDataTimer
         if (tmp[3].Length > 8)
             tmp[3] = tmp[3].Remove(8);
         Milliseconds = int.Parse(tmp[3]);
+        return false;
     }
 
     public new string ToString()
