@@ -71,9 +71,8 @@ public class QEditorGUI  {
             });
         });
         if (dataTimer.SetHMS(timer))
-        {
             timer = dataTimer.ToString();
-        }
+
         return timer;
     }
 }
