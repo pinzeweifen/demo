@@ -11,25 +11,37 @@ public class QDataTimer
     public int Hour
     {
         get { return hour; }
-        set { hour = value % 24; }
+        set {
+            value = value < 0 ? 23 : value;
+            hour = value % 24;
+        }
     }
 
     public int Minute
     {
         get { return minute; }
-        set { minute = value % 60; }
+        set {
+            value = value < 0 ? 59 : value;
+            minute = value % 60;
+        }
     }
 
     public int Seconds
     {
         get { return seconds; }
-        set { seconds = value % 60; }
+        set {
+            value = value < 0 ? 59 : value;
+            seconds = value % 60;
+        }
     }
 
     public int Milliseconds
     {
         get { return milliseconds; }
-        set { milliseconds = value % 10000000; }
+        set {
+            value = value < 0 ? 9999999 : value;
+            milliseconds = value % 10000000;
+        }
     }
 
     public QDataTimer() { }

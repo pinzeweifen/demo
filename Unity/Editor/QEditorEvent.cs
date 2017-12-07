@@ -19,6 +19,16 @@ public class QEditorEvent
         Event.current.Use();
     }
 
+    public static Vector2 Dalta()
+    {
+        return Event.current.delta;
+    }
+
+    public static bool ScrollWhellDalta()
+    {
+        return Dalta().y > 0 ? true : false;
+    }
+
     public static Vector2 MousePosition()
     {
         return Event.current.mousePosition;
