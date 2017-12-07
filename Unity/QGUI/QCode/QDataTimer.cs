@@ -32,10 +32,7 @@ public class QDataTimer
         set { milliseconds = value % 10000000; }
     }
 
-    public QDataTimer()
-    {
-        Hour = Minute = Seconds = Milliseconds = 0;
-    }
+    public QDataTimer() { }
 
     public QDataTimer(string timer)
     {
