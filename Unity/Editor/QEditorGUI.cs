@@ -49,15 +49,18 @@ public class QEditorGUI  {
                 #region 时
                 if (QEditorEvent.IsScrollWhell(x2))
                     dataTimer.Hour++;
-                
+                #endregion
+                #region 分
                 x2.x += 20;
                 if (QEditorEvent.IsScrollWhell(x2))
                     dataTimer.Minute++;
-
+                #endregion
+                #region 秒
                 x2.x += 20;
                 if (QEditorEvent.IsScrollWhell(x2))
                     dataTimer.Seconds++;
-
+                #endregion
+                #region 毫秒
                 x2.x += 18;
                 x2.width = startWidth - 58;
                 if (QEditorEvent.IsScrollWhell(x2))
