@@ -7,14 +7,18 @@ MOUSEMSG QInput::m_MouseMsg;
 
 QInput::QInput()
 {
-    for (int i = 0; i < 256; i++) {
-        m_State[i] = false;
-    }
+    
 }
-
 
 QInput::~QInput()
 {
+}
+
+void QInput::InitState()
+{
+    for (int i = 0; i < 256; i++) {
+        m_State[i] = false;
+    }
 }
 
 QVector2 QInput::getMousePos()

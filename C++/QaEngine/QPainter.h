@@ -17,15 +17,14 @@ class QString;
 class QPainter
 {
 public:
-	QPainter();
-	~QPainter();
+    ~QPainter();
 
     void begin();
     void end();
     void update();
     void endDrawImage();
     void beginDrawImage(QImage *image = NULL);
-    void graphdeFaults() { graphdefaults(); }
+    void graphdeFaults();
     void update(int x, int y, int width, int height);
     
     void moveTo(int x,int y);
@@ -93,12 +92,14 @@ public:
 
 private:
 	Qa::DrawFunction drawFunction();
-
+    QPainter();
+    
 private:
 	QPen * m_Pen;
     QFont *m_Font;
 	QBrush * m_Brush;
     static QPainter *m_Instance;
+    
 };
 
 #endif // !QPAINTER_H

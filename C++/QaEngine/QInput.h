@@ -10,9 +10,9 @@ class QVector2;
 class QInput
 {
 public:
-    QInput();
     ~QInput();
 
+    static void InitState();
     static QVector2 getMousePos();
     static int getWheel();
     static void getMouseMsg();
@@ -22,6 +22,9 @@ public:
     static bool getMouseButtonDown(Qa::MouseCode code);
     static bool getMouseButtonUp(Qa::MouseCode code);
     static bool getMouseDoubleClick(Qa::MouseCode code);
+
+private:
+    QInput();
 
 private:
     static bool m_State[256];

@@ -7,7 +7,7 @@
 #include "QFont.h"
 #include "QString.h"
 
-QPainter *QPainter::m_Instance = new QPainter();
+QPainter *QPainter::m_Instance = new QPainter;
 
 QPainter::QPainter()
 {
@@ -15,6 +15,10 @@ QPainter::QPainter()
 
 QPainter::~QPainter()
 {
+    delete m_Pen;
+    delete m_Font;
+    delete m_Brush;
+    delete m_Instance;
 }
 
 void QPainter::beginDrawImage(QImage * image)
@@ -25,21 +29,30 @@ void QPainter::beginDrawImage(QImage * image)
         SetWorkingImage(NULL);
 }
 
+//重置视图
+void QPainter::graphdeFaults()
+{
+    graphdefaults();
+}
+
 void QPainter::endDrawImage()
 {
     SetWorkingImage(NULL);
 }
 
+//开始批量绘图
 void QPainter::begin()
 {
     BeginBatchDraw();
 }
 
+//结束批量绘图
 void QPainter::end()
 {
     EndBatchDraw();
 }
 
+//执行未完成的绘制任务
 void QPainter::update()
 {
     FlushBatchDraw();

@@ -22,6 +22,8 @@ QApplication::~QApplication()
 int QApplication::exec()
 {
     int i;
+    QInput::InitState();
+
     while (m_Run)
     {
 #pragma region 用户输入
@@ -36,7 +38,7 @@ int QApplication::exec()
 #pragma region 更新绘图设备
         qDraw->begin();
         for (i = 0; i < m_Sprites.count(); i++) {
-            m_Sprites[i]->onGUI();
+            m_Sprites[i]->drawGUI();
             qDraw->update();
         }
         qDraw->end();
@@ -60,6 +62,31 @@ void QApplication::resize(int width, int height)
 void QApplication::addSprite(QSprite *sprite)
 {
     m_Sprites.add(sprite);
+}
+
+const int QApplication::width() const
+{
+    return getwidth();
+}
+
+const int QApplication::height() const
+{
+    return getheight();
+}
+
+HWND QApplication::getHWnd()
+{
+    return GetHWnd();
+}
+
+TCHAR * QApplication::getEasyXVer() const
+{
+    return GetEasyXVer();
+}
+
+QApplication * QApplication::Instance()
+{
+    return m_Instance;
 }
 
 

@@ -21,13 +21,13 @@ public:
 
     void addSprite(QSprite *sprite);
 
-    const int width()const { return getwidth(); }
-    const int height()const { return getheight(); }
-    HWND getHWnd() { return GetHWnd(); }
-    TCHAR* getEasyXVer()const { return GetEasyXVer(); }
+    const int width()const;
+    const int height()const;
+    HWND getHWnd();
+    TCHAR* getEasyXVer()const;
 
 
-    static QApplication *Instance() { return m_Instance; }
+    static QApplication *Instance();
 
 private:
     bool m_Run = true;

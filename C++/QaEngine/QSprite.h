@@ -23,9 +23,11 @@ public:
     QVector2 size()const;
 
     void update();
-    void onGUI();
+    void drawGUI();
 
-private:
+protected:
+    virtual void OnUpdate();
+    virtual void OnGUI();
 
 private:
     int m_X;
