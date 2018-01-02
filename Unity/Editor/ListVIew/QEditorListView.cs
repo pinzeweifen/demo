@@ -17,22 +17,22 @@ public class QEditorListView : QAbstractEditorWindow
     private int width;
     private int height;
     private int _itemWidth;
-    private int _itemHeight;
+    private int _itemHeight = 20;
     private GUILayoutOption scrollWidth = GUILayout.Width(250);
     private GUILayoutOption sorollHeight = GUILayout.ExpandHeight(true);
     private GUILayoutOption itemWidth = GUILayout.ExpandWidth(true);
-    private GUILayoutOption itemHeight = GUILayout.ExpandHeight(false);
+    private GUILayoutOption itemHeight = GUILayout.Height(20);
 
     private static bool drag = false;           //是否拖动
     private static QEditorListView startView;   //开始拖动的列表对象
     private static string select = "LODSliderRangeSelected";//选择时的样式
     private static string about = "HelpBox";//默认样式
     
-    public Action<int ,int> IndexChangedEvent;
+    public Action<int ,int> IndexChangedEvent;//[旧的索引，当前索引]
     public Action<int> EditorIndexEvent;
     public Action<int> StartDragEvent;
-    public Action<bool, int> ContextEvent;
-    public Action<QEditorListView, QEditorListView> EndDragEvent;//结束拖动事件
+    public Action<GenericMenu,bool> ContextEvent;//[菜单，是否选中，选中的索引]
+    public Action<QEditorListView, QEditorListView> EndDragEvent;//结束拖动事件 [开始拖动的Item， 拖动结束的Item]
     
     public QEditorListView(EditorWindow window) : base(window) { }
 
@@ -40,6 +40,11 @@ public class QEditorListView : QAbstractEditorWindow
     {
         get { return index; }
         set { index = value; }
+    }
+
+    public int Count
+    {
+        get { return list.Count; }
     }
 
     public bool IsEditor
@@ -122,7 +127,7 @@ public class QEditorListView : QAbstractEditorWindow
                     if (doubleClickIndex != i)
                     {
                         EditorGUILayout.LabelField(list[i], itemWidth, itemHeight);
-                        ContextMenuEvent(x, true,i);
+                        ContextMenuEvent(x, true);
                         SelectEvent(x);
                         if (isEditor) EditorEvent(x);
                         if (isDrag) DragEvent(x);
@@ -133,9 +138,8 @@ public class QEditorListView : QAbstractEditorWindow
                     }
                 }, i == index ? select : about);
             }
-            ContextMenuEvent(EditorGUILayout.GetControlRect(), false, -1);
+            ContextMenuEvent(EditorGUILayout.GetControlRect(), false);
         }, scrollPos, scrollWidth, sorollHeight);
-
     }
 
     public void Add(string value)
@@ -161,7 +165,10 @@ public class QEditorListView : QAbstractEditorWindow
 
     public void RemoveAt(int index)
     {
+        if(list.Count >0)
         list.RemoveAt(index);
+        if (index == list.Count)
+            Index--;
         w.Repaint();
     }
 
@@ -171,11 +178,28 @@ public class QEditorListView : QAbstractEditorWindow
         w.Repaint();
     }
 
-    private void ContextMenuEvent(Rect x, bool isItem, int index)
+    public int IndexOf(string value)
+    {
+        for(int i = 0; i < list.Count; i++)
+        {
+            if (list[i].IndexOf(value)!=-1)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    private void ContextMenuEvent(Rect x, bool isItem)
     {
         if (QEditorEvent.IsContextClick(x))
-            if(ContextEvent!=null)
-                ContextEvent(isItem,index);
+            if (ContextEvent != null)
+            {
+                GenericMenu menu = new GenericMenu();
+                ContextEvent(menu, isItem);
+                menu.ShowAsContext();
+            }
+                
     }
     
     private void SelectEvent(Rect x)

@@ -11,7 +11,6 @@ public enum Mouse
 
 public class QEditorEvent
 {
-
     #region public function
 
     public static void Use()
