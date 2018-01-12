@@ -87,7 +87,7 @@ public class CarouselUI : MonoBehaviour {
         {
             var index = i;
             EventListener.Get(images[i].gameObject).onClick += e => {
-                if (IndexClick != null) IndexClick.Invoke(index);
+                IndexClick.Invoke(index);
             };
         }
         #endregion
@@ -96,13 +96,13 @@ public class CarouselUI : MonoBehaviour {
         go.SetParent(gridTransform);
         go.SetAsFirstSibling();
         EventListener.Get(go.gameObject).onClick += e => {
-            if (IndexClick != null) IndexClick.Invoke(images.Length - 1);
+            IndexClick.Invoke(images.Length - 1);
         };
 
         go = Instantiate(images[0]).transform;
         go.SetParent(gridTransform);
         EventListener.Get(go.gameObject).onClick += e => {
-            if (IndexClick != null) IndexClick.Invoke(0);
+            IndexClick.Invoke(0);
         };
         #endregion
 
@@ -131,8 +131,7 @@ public class CarouselUI : MonoBehaviour {
                 gridTransform.anchoredPosition = size ;
                 index = 0;
             }
-            if (IndexChanged != null)
-                IndexChanged.Invoke(index);
+            IndexChanged.Invoke(index);
         }));
     }
      
@@ -147,8 +146,7 @@ public class CarouselUI : MonoBehaviour {
                 gridTransform.anchoredPosition = size * maxIndex;
                 index = maxIndex - 1;
             }
-            if (IndexChanged != null)
-                IndexChanged.Invoke(index);
+            IndexChanged.Invoke(index);
         }));
     }
     
@@ -162,9 +160,8 @@ public class CarouselUI : MonoBehaviour {
             yield return null;
         } while (Vector2.Distance(rect.anchoredPosition, point) > 0.5f);
         rect.anchoredPosition = point;
-       
-        if (endFunction != null)
-            endFunction();
+
+        endFunction();
 
         animated = false;
     }
