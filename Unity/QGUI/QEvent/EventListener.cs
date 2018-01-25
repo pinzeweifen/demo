@@ -2,7 +2,25 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class EventListener : EventTrigger
+public class EventListener : 
+MonoBehaviour,
+IPointerClickHandler,
+IPointerDownHandler,
+IPointerUpHandler,
+IPointerEnterHandler,
+IPointerExitHandler,
+IInitializePotentialDragHandler,
+IBeginDragHandler,
+IEndDragHandler,
+IDragHandler,
+IDropHandler,
+IScrollHandler,
+ISelectHandler,
+IUpdateSelectedHandler,
+IDeselectHandler,
+IMoveHandler,
+ISubmitHandler,
+ICancelHandler
 {
     public Action<PointerEventData> onClick;
     public Action<PointerEventData> onDoubleClick;
@@ -14,7 +32,7 @@ public class EventListener : EventTrigger
     public Action<PointerEventData> onBeginDrag;
     public Action<PointerEventData> onDrop;
     public Action<PointerEventData> onDrag;
-    public Action<PointerEventData>onEndDrag;
+    public Action<PointerEventData> onEndDrag;
     public Action<PointerEventData> onScroll;
     public Action<BaseEventData> onSelect;
     public Action<BaseEventData> onUpdateSelected;
@@ -23,7 +41,7 @@ public class EventListener : EventTrigger
     public Action<AxisEventData> onMove;
     public Action<BaseEventData> onDeselect;
 
-    static public EventListener Get(GameObject go)
+    public static EventListener Get(GameObject go)
     {
         EventListener listener = go.GetComponent<EventListener>();
         if (listener == null) listener = go.AddComponent<EventListener>();
@@ -35,7 +53,7 @@ public class EventListener : EventTrigger
         EventSystem.current.SetSelectedGameObject(go);
     }
 
-    public override void OnPointerClick(PointerEventData eventData)
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
         SetFocus(gameObject);
         if(eventData.clickCount == 1)
@@ -48,98 +66,98 @@ public class EventListener : EventTrigger
         }
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
     {
         if (onMouseUp != null) onMouseUp(eventData);
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
         SetFocus(gameObject);
         if (onMouseDown != null) onMouseDown(eventData);
     }
 
-    public override void OnPointerEnter(PointerEventData eventData)
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
         if (onEnter != null)
             onEnter(eventData);
     }
 
-    public override void OnPointerExit(PointerEventData eventData)
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
         if (onExit != null)
             onExit(eventData);
     }
 
-    public override void OnInitializePotentialDrag(PointerEventData eventData)
+    void IInitializePotentialDragHandler.OnInitializePotentialDrag(PointerEventData eventData)
     {
         SetFocus(gameObject);
         if (onInitializePotentialDrag != null)
             onInitializePotentialDrag(eventData);
     }
 
-    public override void OnBeginDrag(PointerEventData eventData)
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
         if (onBeginDrag != null)
             onBeginDrag(eventData);
     }
 
-    public override void OnDrag(PointerEventData eventData)
+    void IDragHandler.OnDrag(PointerEventData eventData)
     {
         if (onDrag != null)
             onDrag(eventData);
     }
 
-    public override void OnDrop(PointerEventData eventData)
+    void IDropHandler.OnDrop(PointerEventData eventData)
     {
         if (onDrop != null)
             onDrop(eventData);
     }
 
-    public override void OnEndDrag(PointerEventData eventData)
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         SetFocus(gameObject);
         if (onEndDrag != null)
             onEndDrag(eventData);
     }
 
-    public override void OnScroll(PointerEventData eventData)
+    void IScrollHandler.OnScroll(PointerEventData eventData)
     {
         if (onScroll != null)
             onScroll(eventData);
     }
 
-    public override void OnSelect(BaseEventData eventData)
+    void ISelectHandler.OnSelect(BaseEventData eventData)
     {
         if (onSelect != null)
             onSelect(eventData);
     }
 
-    public override void OnUpdateSelected(BaseEventData eventData)
+    void IUpdateSelectedHandler.OnUpdateSelected(BaseEventData eventData)
     {
         if (onUpdateSelected != null)
             onUpdateSelected(eventData);
     }
 
-    public override void OnSubmit(BaseEventData eventData)
+    void ISubmitHandler.OnSubmit(BaseEventData eventData)
     {
         if (onSubmit != null)
             onSubmit(eventData);
     }
 
-    public override void OnCancel(BaseEventData eventData)
+    void ICancelHandler.OnCancel(BaseEventData eventData)
     {
         if (onCancel != null)
             onCancel(eventData);
     }
 
-    public override void OnMove(AxisEventData eventData)
+    void IMoveHandler.OnMove(AxisEventData eventData)
     {
         if (onMove != null)
             onMove(eventData);
     }
 
-    public override void OnDeselect(BaseEventData eventData)
+    void IDeselectHandler.OnDeselect(BaseEventData eventData)
     {
         if (onDeselect != null)
             onDeselect(eventData);
