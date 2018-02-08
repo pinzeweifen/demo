@@ -168,7 +168,6 @@ namespace QGUI
             if (current.type == EventType.DragPerform
               || current.type == EventType.DragUpdated)
             {
-                DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
                 if (DragAndDrop.paths != null && DragAndDrop.paths.Length > 0)
                     return true;
             }
@@ -328,16 +327,16 @@ namespace QGUI
         {
             return current.button == (int)button;
         }
-        
-        #endregion
 
-        #region private function
-
-        private static bool IsRectContains(this Event current, Rect rect)
+        public static bool IsRectContains(this Event current, Rect rect)
         {
             return rect.Contains(current.mousePosition);
         }
 
+        #endregion
+
+        #region private function
+        
         private static void Command(this Event current, string command, Action callback)
         {
             if (null == callback) return;
