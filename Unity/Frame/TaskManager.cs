@@ -26,7 +26,7 @@ namespace frame
             dic[task.GetID] = task;
             return false;
         }
-        
+
         public void Remove(int task)
         {
             if (dic.ContainsKey(task))

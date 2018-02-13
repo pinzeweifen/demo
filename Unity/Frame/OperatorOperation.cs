@@ -30,7 +30,6 @@ namespace frame
     /// </summary>
     public class EqOperation : OperatorOperation
     {
-
         public EqOperation(object o) : base(o) { }
         public EqOperation(object o,object o2) : base(o,o2) { }
 
@@ -70,20 +69,18 @@ namespace frame
     /// </summary>
     public class AndOperation : OperatorOperation
     {
-        public AndOperation(object o) : base(o) { }
-        public AndOperation(object o, object o2) : base(o, o2) { }
+        public AndOperation(OperatorOperation o) : base(o) { }
+        public AndOperation(OperatorOperation o, OperatorOperation o2) : base(o, o2) { }
 
         public override bool IsTrue()
         {
-            if (obj is OperatorOperation && obj2 is OperatorOperation)
-                return ((OperatorOperation)obj).IsTrue() && ((OperatorOperation)obj2).IsTrue();
-            return false;
+            return (obj as OperatorOperation).IsTrue() && (obj2 as OperatorOperation).IsTrue();
         }
 
         public override bool IsTrue(object obj)
         {
-            if (this.obj is OperatorOperation && obj is OperatorOperation)
-                return ((OperatorOperation)this.obj).IsTrue() && ((OperatorOperation)obj).IsTrue();
+            if (obj is OperatorOperation)
+                return (this.obj as OperatorOperation).IsTrue() && (obj as OperatorOperation).IsTrue();
             return false;
         }
     }
@@ -93,20 +90,18 @@ namespace frame
     /// </summary>
     public class OrOperation : OperatorOperation
     {
-        public OrOperation(object o) : base(o) { }
-        public OrOperation(object o, object o2) : base(o, o2) { }
+        public OrOperation(OperatorOperation o) : base(o) { }
+        public OrOperation(OperatorOperation o, OperatorOperation o2) : base(o, o2) { }
 
         public override bool IsTrue()
         {
-            if (obj is OperatorOperation && obj2 is OperatorOperation)
-                return ((OperatorOperation)obj).IsTrue() || ((OperatorOperation)obj2).IsTrue();
-            return false;
+            return (obj as OperatorOperation).IsTrue() || (obj2 as OperatorOperation).IsTrue();
         }
 
         public override bool IsTrue(object obj)
         {
-            if (this.obj is OperatorOperation && obj is OperatorOperation)
-                return ((OperatorOperation)this.obj).IsTrue() || ((OperatorOperation)obj).IsTrue();
+            if (obj is OperatorOperation)
+                return (this.obj as OperatorOperation).IsTrue() || (obj as OperatorOperation).IsTrue();
             return false;
         }
     }
