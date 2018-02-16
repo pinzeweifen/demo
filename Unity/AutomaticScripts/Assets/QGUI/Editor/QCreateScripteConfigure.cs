@@ -35,7 +35,9 @@ namespace QGUI
             {
                 if (!Directory.Exists("Assets/" + notUIPath))
                 {
+                    
                     Directory.CreateDirectory("Assets/" + notUIPath);
+                    
                 }
                 if (!Directory.Exists("Assets/" + uiPath))
                 {

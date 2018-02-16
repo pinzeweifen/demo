@@ -9,9 +9,9 @@ namespace QGUI
     {
         private static Event current;
         public static GameObject selectGameObject;
-        private static GUIContent add = new GUIContent("Add", "添加标记");
+        private static GUIContent add = new GUIContent("AddSign", "添加标记");
         private static GUIContent create = new GUIContent("Create", "创建脚本");
-        private static GUIContent remove = new GUIContent("Remove", "移除标记");
+        private static GUIContent remove = new GUIContent("RemoveSign", "移除标记");
         
         [InitializeOnLoadMethod]
         public static void Init()
