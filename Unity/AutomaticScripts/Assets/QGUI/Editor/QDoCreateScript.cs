@@ -36,9 +36,7 @@ namespace QGUI
             text = Create(text, select.GetComponentsInChildren<QMarkupField>());
 
             var encoding = new UTF8Encoding(true, false);
-            Debug.Log(pathName);
             pathName = pathName.Replace("_","/");
-            Debug.Log(pathName+"-----");
             File.WriteAllText(pathName, text, encoding);
 
             AssetDatabase.ImportAsset(pathName);

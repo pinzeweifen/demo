@@ -1,35 +1,66 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
+//using System;
 
 namespace QGUI
 {
     [InitializeOnLoad]
     public class QCreateScript
     {
-        private static Event current;
+        public static bool isOne = false;
+        public static bool isShow = true;
         public static GameObject selectGameObject;
-        private static GUIContent add = new GUIContent("AddSign", "添加标记");
-        private static GUIContent create = new GUIContent("Create", "创建脚本");
-        private static GUIContent remove = new GUIContent("RemoveSign", "移除标记");
+
+        private static Event current;
+        private static bool isSelectChanaged = false;
+        private static QCreateSignInfo menu = new QCreateSignInfo();
+        private static GUIContent add = new GUIContent("AddSign", "Add markup");
+        private static GUIContent create = new GUIContent("Create", "Create a script");
+        private static GUIContent remove = new GUIContent("RemoveSign", "Remove markup");
         
         [InitializeOnLoadMethod]
         public static void Init()
         {
+            Selection.selectionChanged += OnSelectionChanaged;
             SceneView.onSceneGUIDelegate += OnScene;
-            if (!Directory.Exists("Assets/"+ QCreateScripteConfigure.notUIPath))
+            if (!Directory.Exists("Assets/"+ QCreateScriptsConfigure.notUIPath))
             {
-                Directory.CreateDirectory("Assets/" + QCreateScripteConfigure.notUIPath);
+                Directory.CreateDirectory("Assets/" + QCreateScriptsConfigure.notUIPath);
             }
-            if (!Directory.Exists("Assets/" + QCreateScripteConfigure.uiPath))
+            if (!Directory.Exists("Assets/" + QCreateScriptsConfigure.uiPath))
             {
-                Directory.CreateDirectory("Assets/" + QCreateScripteConfigure.uiPath);
+                Directory.CreateDirectory("Assets/" + QCreateScriptsConfigure.uiPath);
+            }
+        }
+
+        private static void OnSelectionChanaged()
+        {
+            if (!isShow) return;
+
+            if(Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<QMarkupField>())
+            {
+                isSelectChanaged = true;
+                isOne = true;
+            }
+            else
+            {
+                isSelectChanaged = false;
             }
         }
         
         private static void OnScene(SceneView view)
         {
             current = Event.current;
+
+            if (isSelectChanaged)
+            {
+                if (isOne)
+                {
+                    PopupWindow.Show(new Rect(new Vector2(current.mousePosition.x+10, current.mousePosition.y+10), Vector2.zero), menu);
+                }
+            }
+
             if (Selection.activeGameObject != null)
             {
                 if (current.IsButton(MouseButton.Right) && current.IsMouseDown())
@@ -49,7 +80,7 @@ namespace QGUI
 
         private static void OnCreate()
         {
-            string resourceFile = "Assets/" + QCreateScripteConfigure.resourceFile;
+            string resourceFile = "Assets/" + QCreateScriptsConfigure.resourceFile;
 
             var endNameEditAction =
                 ScriptableObject.CreateInstance<QDoCreateScript>();
@@ -57,11 +88,11 @@ namespace QGUI
             string pathName = string.Empty;
             if(selectGameObject.layer == 5)
             {
-                pathName = string.Format("{0}/{1}UI.cs", QCreateScripteConfigure.uiPath, selectGameObject.name);
+                pathName = string.Format("{0}/{1}UI.cs", QCreateScriptsConfigure.uiPath, selectGameObject.name);
             }
             else
             {
-                pathName = string.Format("{0}/{1}UI.cs", QCreateScripteConfigure.notUIPath, selectGameObject.name);
+                pathName = string.Format("{0}/{1}UI.cs", QCreateScriptsConfigure.notUIPath, selectGameObject.name);
             }
 
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, endNameEditAction,

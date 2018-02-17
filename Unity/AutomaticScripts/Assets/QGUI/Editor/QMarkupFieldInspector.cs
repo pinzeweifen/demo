@@ -15,7 +15,7 @@ namespace QGUI
         {
             QMarkupField field = target as QMarkupField;
 
-            field.jurisdiction = (QMarkupField.Jurisdiction)EditorGUILayout.EnumPopup("权限", field.jurisdiction);
+            field.jurisdiction = (QMarkupField.Jurisdiction)EditorGUILayout.EnumPopup("Jurisdiction", field.jurisdiction);
 
             coms = field.GetComponents<MonoBehaviour>();
             op = new string[coms.Length];
@@ -27,7 +27,7 @@ namespace QGUI
                 op[i] = typeMame;
             }
 
-            field.index = EditorGUILayout.Popup("类型", field.index, op);
+            field.index = EditorGUILayout.Popup("ClassType", field.index, op);
             field.component = op[field.index];
         }
     }
