@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 public class PlayerMove : MonoBehaviour 
 {
@@ -6,6 +7,7 @@ public class PlayerMove : MonoBehaviour
     public bool isRight = true;
     public float moveForce = 100f;
     public float maxSpeed = 2f;
+    public Action<bool> onMove;
 
     private float horizontal;
     private new Rigidbody2D rigidbody2D;
@@ -36,6 +38,11 @@ public class PlayerMove : MonoBehaviour
         {
             rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x)* maxSpeed, rigidbody2D.velocity.y);
         }
+        if(rigidbody2D.velocity.x >-0.005f && rigidbody2D.velocity.x < 0.005f)
+        {
+            if (onMove != null)
+                onMove(false);
+        }
     }
 
     void Flip()
@@ -48,6 +55,12 @@ public class PlayerMove : MonoBehaviour
 
     private void Move(float h)
     {
+        
         rigidbody2D.AddForce(Vector2.right * h * moveForce);
+        if(rigidbody2D.velocity.x > 0.005f|| rigidbody2D.velocity.x < -0.005f)
+        {
+            if (onMove != null)
+                onMove(true);
+        }
     }
 }
