@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 public class BuildAnimation : EditorWindow
 {
@@ -13,7 +14,7 @@ public class BuildAnimation : EditorWindow
     {
         GetWindow<BuildAnimation>().Show();
     }
-    
+
     private void OnGUI()
     {
         EditorGUILayout.TextField("文件夹", folder);
@@ -33,7 +34,7 @@ public class BuildAnimation : EditorWindow
         ObjectReferenceKeyframe[] keyFrames = new ObjectReferenceKeyframe[obj.Length + 1];
         for (int i = 0; i <= obj.Length; i++)
         {
-            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GetAssetPath(obj[i==obj.Length?0:i]));
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GetAssetPath(obj[i == obj.Length ? 0 : i]));
             keyFrames[i] = new ObjectReferenceKeyframe();
             keyFrames[i].time = time * i;
             keyFrames[i].value = sprite;
@@ -50,17 +51,20 @@ public class BuildAnimation : EditorWindow
         curveBinding.type = typeof(SpriteRenderer);
         curveBinding.propertyName = "m_Sprite";
         AnimationUtility.SetObjectReferenceCurve(clip, curveBinding, keyFrames);
-        
-        AssetDatabase.CreateAsset(clip, "Assets/"+ folder+"/" + fileName + ".anim");
+
+        if (!Directory.Exists("Assets/" + folder))
+            Directory.CreateDirectory("Assets/" + folder);
+
+        AssetDatabase.CreateAsset(clip, "Assets/" + folder + "/" + fileName + ".anim");
     }
 
-    Object [] Sort(Object []obj)
+    Object[] Sort(Object[] obj)
     {
-        for(int i = 0; i < obj.Length; i++)
+        for (int i = 0; i < obj.Length; i++)
         {
             for (int j = i + 1; j < obj.Length; j++)
             {
-                if(Strcmp(obj[i].name, obj[j].name) > 0)
+                if (Strcmp(obj[i].name, obj[j].name) > 0)
                 {
                     Swap(ref obj[i], ref obj[j]);
                 }
@@ -79,7 +83,7 @@ public class BuildAnimation : EditorWindow
     int Strcmp(string a, string b)
     {
         int count = a.Length < b.Length ? a.Length : b.Length;
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             if (a[i] < b[i])
                 return -1;
