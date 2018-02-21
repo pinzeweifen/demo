@@ -59,7 +59,7 @@ namespace QGUI
             foreach (var obj in objs)
             {
                 var name = GetName(obj.name);
-                destroyNull.AppendFormat(destroyNullStr, obj.name);
+                destroyNull.AppendFormat(destroyNullStr, name);
                 field.AppendFormat(fieldStr, GetLower(obj.jurisdiction.ToString()), obj.component, name);
 
                 if (obj.jurisdiction != QMarkupField.Jurisdiction.Public)
