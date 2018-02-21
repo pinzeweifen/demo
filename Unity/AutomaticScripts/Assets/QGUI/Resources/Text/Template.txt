@@ -13,8 +13,13 @@ public partial class {0}{{
     {{
 {2}  
     }}
+
+	private void OnDestroy()
+    {{
+{3}
+    }}
 }}
 
 public partial class {0}{{
-{3}
+{4}
 }}

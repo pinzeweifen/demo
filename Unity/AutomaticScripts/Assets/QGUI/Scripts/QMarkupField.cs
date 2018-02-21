@@ -18,6 +18,8 @@ namespace QGUI
 
         [HideInInspector]
         public int index;
+        [HideInInspector]
+        public string[] components;
     }
     
 }

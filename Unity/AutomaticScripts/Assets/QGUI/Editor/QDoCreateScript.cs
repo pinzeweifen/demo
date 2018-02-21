@@ -18,6 +18,8 @@ namespace QGUI
         private readonly string eventFunction = "\n\tprivate void On{0}ValueChanged({1} value)\n\t{{\n\n\t}}\n";
         private readonly string buttonEvent = "\t\tm_{0}.onClick.AddListener(On{0}Click);\n";
         private readonly string buttonFunction = "\n\tprivate void On{0}Click()\n\t{{\n\n\t}}\n";
+        private readonly string destroyEvent = "\t\tm_{0}.onValueChanged.RemoveListener(On{0}ValueChanged);\n";
+        private readonly string destroyNullStr = "\t\tm_{0} = null;\n";
 
         private readonly static string[] types = new string[] {
             "InputField", "ScrollRect", "Dropdown", "Scrollbar", "Slider", "Toggle"
@@ -51,11 +53,13 @@ namespace QGUI
             var awake = new StringBuilder();
             var awakeComponent = new StringBuilder();
             var function = new StringBuilder();
+            var destroy = new StringBuilder();
+            var destroyNull = new StringBuilder();
 
             foreach (var obj in objs)
             {
                 var name = GetName(obj.name);
-
+                destroyNull.AppendFormat(destroyNullStr, obj.name);
                 field.AppendFormat(fieldStr, GetLower(obj.jurisdiction.ToString()), obj.component, name);
 
                 if (obj.jurisdiction != QMarkupField.Jurisdiction.Public)
@@ -67,8 +71,8 @@ namespace QGUI
                 {
                     if (obj.component == types[i])
                     {
-
                         awake.AppendFormat(awakeEvent, name);
+                        destroy.AppendFormat(destroyEvent, name);
                         function.AppendFormat(eventFunction, name, parameters[i]);
                         break;
                     }
@@ -81,9 +85,9 @@ namespace QGUI
             }
 
             if (select.layer == 5)
-                return string.Format(text, GetUpper(select.name + "UI"), field, awakeComponent.Append(awake), function);
+                return string.Format(text, GetUpper(select.name + "UI"), field, awakeComponent.Append("\n"+awake), destroy.Append("\n"+ destroyNull), function);
             else
-                return string.Format(text, GetUpper(select.name), field, awakeComponent.Append(awake), function);
+                return string.Format(text, GetUpper(select.name), field, awake, string.Empty, string.Empty);
         }
 
         private string GetLower(string value)

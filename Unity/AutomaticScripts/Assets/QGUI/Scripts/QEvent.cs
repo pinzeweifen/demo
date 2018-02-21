@@ -10,7 +10,7 @@ namespace QGUI
         Right,
         Middle
     }
-
+    
     public static class QEvent
     {
         #region public function

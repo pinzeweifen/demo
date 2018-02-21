@@ -55,9 +55,9 @@ namespace QGUI
 
             if (isSelectChanaged)
             {
-                if (isOne)
+                if (isOne && current.IsModifiers(EventModifiers.Control))
                 {
-                    PopupWindow.Show(new Rect(new Vector2(current.mousePosition.x+10, current.mousePosition.y+10), Vector2.zero), menu);
+                    PopupWindow.Show(new Rect(new Vector2(current.mousePosition.x + 10, current.mousePosition.y + 10), Vector2.zero), menu);
                 }
             }
 
