@@ -50,12 +50,12 @@ namespace QGUI
         }
         
         private static void OnScene(SceneView view)
-        {
+        { 
             current = Event.current;
 
             if (isSelectChanaged)
             {
-                if (isOne && current.IsModifiers(EventModifiers.Control))
+                if (isOne && current.IsKeyDown(KeyCode.Alpha1))
                 {
                     PopupWindow.Show(new Rect(new Vector2(current.mousePosition.x + 10, current.mousePosition.y + 10), Vector2.zero), menu);
                 }

@@ -13,6 +13,7 @@ namespace QGUI
         private GameObject select;
 
         private readonly string fieldStr = "\t{0} {1} m_{2};\n";
+        private readonly string accessorStr = "\tpublic {0} {1}\n\t{{\n\t\tget\n\t\t{{\n\t\t\treturn m_{1};\n\t\t}}\n\t\tset\n\t\t{{\n\t\t\tm_{1} = value;\n\t\t}}\n\t}}\n";
         private readonly string awakeFind = "\t\tm_{0} = transform.Find(\"{1}\").GetComponent<{2}>();\n";
         private readonly string awakeEvent = "\t\tm_{0}.onValueChanged.AddListener(On{0}ValueChanged);\n";
         private readonly string eventFunction = "\n\tprivate void On{0}ValueChanged({1} value)\n\t{{\n\n\t}}\n";
@@ -50,6 +51,7 @@ namespace QGUI
         private string Create(string text, QMarkupField[] objs)
         {
             var field = new StringBuilder();
+            var accessor = new StringBuilder();
             var awake = new StringBuilder();
             var awakeComponent = new StringBuilder();
             var function = new StringBuilder();
@@ -61,9 +63,10 @@ namespace QGUI
                 var name = GetName(obj.name);
                 destroyNull.AppendFormat(destroyNullStr, name);
                 field.AppendFormat(fieldStr, GetLower(obj.jurisdiction.ToString()), obj.component, name);
-
+                
                 if (obj.jurisdiction != QMarkupField.Jurisdiction.Public)
                 {
+                    accessor.AppendFormat(accessorStr, obj.component, name);
                     awakeComponent.AppendFormat(awakeFind, name, RemoveZreo(GetFind(obj.transform, select.transform)), obj.component);
                 }
 
@@ -85,9 +88,9 @@ namespace QGUI
             }
 
             if (select.layer == 5)
-                return string.Format(text, GetUpper(select.name + "UI"), field, awakeComponent.Append("\n"+awake), destroy.Append("\n"+ destroyNull), function);
+                return string.Format(text, GetUpper(select.name + "UI"), field.Append("\n"+ accessor), awakeComponent.Append("\n"+awake), destroy.Append("\n"+ destroyNull), function);
             else
-                return string.Format(text, GetUpper(select.name), field, awake, string.Empty, string.Empty);
+                return string.Format(text, GetUpper(select.name), field.Append("\n" + accessor), awake, string.Empty, string.Empty);
         }
 
         private string GetLower(string value)

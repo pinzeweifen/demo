@@ -6,15 +6,15 @@ namespace QGUI
 {
     public enum MouseButton
     {
-        Left=0,
+        Left = 0,
         Right,
         Middle
     }
-    
+
     public static class QEvent
     {
         #region public function
-        
+
         /// <summary>
         /// 粘贴命令
         /// </summary>
@@ -77,7 +77,7 @@ namespace QGUI
         {
             current.Command("SelectAll", callback);
         }
-        
+
         /// <summary>
         /// 是否按下事件
         /// </summary>
@@ -88,12 +88,34 @@ namespace QGUI
         }
 
         /// <summary>
+        /// 是否按下 keyCode 键
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="keyCode"></param>
+        /// <returns></returns>
+        public static bool IsKeyDown(this Event current, KeyCode keyCode)
+        {
+            return current.type == EventType.KeyDown && current.keyCode == keyCode;
+        }
+
+        /// <summary>
         /// 是否弹起事件
         /// </summary>
         /// <returns></returns>
         public static bool IsKeyUp(this Event current)
         {
             return current.type == EventType.KeyUp;
+        }
+
+        /// <summary>
+        /// 是否弹起 keyCode 键
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="keyCode"></param>
+        /// <returns></returns>
+        public static bool IsKeyUp(this Event current, KeyCode keyCode)
+        {
+            return current.type == EventType.KeyUp && current.keyCode == keyCode;
         }
 
         /// <summary>
@@ -313,7 +335,7 @@ namespace QGUI
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static bool IsKeyCode(this Event current,KeyCode key)
+        public static bool IsKeyCode(this Event current, KeyCode key)
         {
             return current.keyCode == key;
         }
@@ -328,7 +350,7 @@ namespace QGUI
         /// </summary>
         /// <param name="mouse"></param>
         /// <returns></returns>
-        public static bool IsButton(this Event current,MouseButton button)
+        public static bool IsButton(this Event current, MouseButton button)
         {
             return current.button == (int)button;
         }
@@ -341,7 +363,7 @@ namespace QGUI
         #endregion
 
         #region private function
-        
+
         private static void Command(this Event current, string command, Action callback)
         {
             if (null == callback) return;
