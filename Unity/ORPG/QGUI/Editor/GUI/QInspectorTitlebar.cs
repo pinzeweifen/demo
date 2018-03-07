@@ -36,12 +36,14 @@ namespace QGUI
 
         public void RemoveAt(int index)
         {
+            if (index >= m_List.Count || index < 0) return;
             m_List.RemoveAt(index);
         }
 
         public void Remove(Object obj)
         {
-            m_List.Remove(obj);
+            if (m_List.Contains(obj))
+                m_List.Remove(obj);
         }
 
         public void SetArray(Object[]objs)

@@ -28,24 +28,25 @@ namespace QGUI
 
         public void RemoveAt(int index)
         {
-            if(index<m_List.Count)
+            if (index >= m_List.Count || index < 0) return;
             m_List.RemoveAt(index);
         }
 
         public void Remove(string value)
         {
-            if(m_List.Contains(value))
-            m_List.Remove(value);
+            if (m_List.Contains(value))
+                m_List.Remove(value);
         }
 
         public string GetValue(int index)
         {
-            if(index<m_List.Count)
+            if (index >= m_List.Count || index < 0)
+                return string.Empty;
+
             return m_List[index];
-            return string.Empty;
         }
-        
-        public string [] GetValues()
+
+        public string[] GetValues()
         {
             return m_List.ToArray();
         }

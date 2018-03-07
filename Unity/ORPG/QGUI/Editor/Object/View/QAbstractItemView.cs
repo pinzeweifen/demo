@@ -20,8 +20,15 @@ namespace QGUI
 
         public int Index { get { return m_Index; } }
         public int Count { get { return m_List.Count; } }
-        public IViewItem this[int index] { get { return m_List[index]; } }
         public float Space { get { return m_Space; } set { m_Space = value; } }
+
+        public IViewItem this[int index] {
+            get {
+                if(index<m_List.Count)
+                return m_List[index];
+                return null;
+            }
+        }
 
         public Action<QAbstractItemView, int> onCurrentChanged;
         public Action<GenericMenu, bool> onContextMenu;
@@ -106,7 +113,9 @@ namespace QGUI
                         0 != i ? totalHeight += (item.Height + m_Space) : 0, 
                         m_Rect.width - 18, 
                         item.Height);
-                    
+
+                    var controlName = string.Format("Object_{0}_{1}", m_ID, i);
+                    GUI.SetNextControlName(controlName);
                     DrawItem(rect, i);
                     
                     if(m_Index == i)
@@ -118,6 +127,7 @@ namespace QGUI
                         if (onCurrentChanged != null)
                             onCurrentChanged(this, m_Index);
                         m_Window.Repaint();
+                        GUI.FocusControl(controlName);
                     }
                     if (current.IsContextClick(rect))
                     {

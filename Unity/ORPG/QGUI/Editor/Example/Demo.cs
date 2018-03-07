@@ -141,7 +141,7 @@ public partial class Demo
             m_Dic[article.ID] = article;
             m_LeftList.Add(new LeftItem(article));
         }
-        LeftItem.Total++;
+        
         db.CloseSqlConnection();
     }
 
@@ -200,6 +200,8 @@ public partial class Demo
 
     private static void Create(string Name)
     {
+        LeftItem.SetTotal(0);
+
         var window = GetWindow<Demo>(Name);
         window.Show();
         window.position = m_DefaultPosition;
@@ -247,8 +249,7 @@ public partial class Demo
         AddToRightList();
         Load();
     }
-
-    int index;
+    
     private void OnGUI()
     {
         var current = Event.current;
@@ -295,10 +296,18 @@ public partial class Demo
             m_RightList.Move(right, m_MenuHeight);
             m_RightList.Resize(position.width - right, position.height - m_RightList.GlobalY);
 
-            var article = m_Dic[ (m_LeftList[m_LeftList.Index] as LeftItem).ID];
-            UpdateRightListData(article);
-            m_RightList.OnGUI(current);
-            UpdateDicData(article);
+            var item = m_LeftList[m_LeftList.Index];
+            if (item!=null)
+            {
+                var key = (m_LeftList[m_LeftList.Index] as LeftItem).ID;
+                if (m_Dic.ContainsKey(key))
+                {
+                    var article = m_Dic[key];
+                    UpdateRightListData(article);
+                    m_RightList.OnGUI(current);
+                    UpdateDicData(article);
+                }
+            }
         }
     }
     
@@ -317,8 +326,11 @@ public partial class Demo
                 m_LeftList.OpenEditor(m_LeftList.Index);
             });
 
+            menu.AddSeparator("");
             menu.AddItem(m_DeleteItem, false, () => {
+                var item = m_LeftList[m_LeftList.Index] as LeftItem;
                 m_LeftList.RemoveAt(m_LeftList.Index);
+                m_Dic.Remove(item.ID);
             });
         }
     }
@@ -368,7 +380,12 @@ class LeftItem : QViewItem, IViewItem
         m_Name = article.Name;
         m_Article = article;
         Height = m_DefaultHeight;
-        m_Total = m_ID > m_Total ? m_ID : m_Total;
+        Total = m_ID;
+    }
+
+    public static void SetTotal(int value)
+    {
+        m_Total = value;
     }
 
     protected override void NameChangedEvent()

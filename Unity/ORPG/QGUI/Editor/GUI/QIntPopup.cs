@@ -35,7 +35,7 @@ namespace QGUI
 
         public string GetName(int index)
         {
-            if (index >= m_Display.Count) return string.Empty;
+            if (index >= m_Display.Count||index<0) return string.Empty;
             return m_Display[index];
         }
 
@@ -46,7 +46,7 @@ namespace QGUI
 
         public void SetValue(int index, string name, int value)
         {
-            if (index > m_Display.Count) return;
+            if (index >= m_Display.Count||index<0) return;
             m_Display[index] = name;
             m_Values[index] = value;
         }
