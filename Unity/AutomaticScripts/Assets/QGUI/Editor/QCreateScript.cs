@@ -22,6 +22,7 @@ namespace QGUI
         [InitializeOnLoadMethod]
         public static void Init()
         {
+            EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyOnGUI;
             Selection.selectionChanged += OnSelectionChanaged;
             SceneView.onSceneGUIDelegate += OnScene;
             if (!Directory.Exists("Assets/"+ QCreateScriptsConfigure.notUIPath))
@@ -32,6 +33,12 @@ namespace QGUI
             {
                 Directory.CreateDirectory("Assets/" + QCreateScriptsConfigure.uiPath);
             }
+        }
+
+        private static void OnHierarchyOnGUI(int instanceID, Rect selectionRect)
+        {
+            if (!isShow) return;
+            ShowWindow();
         }
 
         private static void OnSelectionChanaged()
@@ -53,13 +60,7 @@ namespace QGUI
         { 
             current = Event.current;
 
-            if (isSelectChanaged)
-            {
-                if (isOne && current.IsKeyDown(KeyCode.Alpha1))
-                {
-                    PopupWindow.Show(new Rect(new Vector2(current.mousePosition.x + 10, current.mousePosition.y + 10), Vector2.zero), menu);
-                }
-            }
+            ShowWindow();
 
             if (Selection.activeGameObject != null)
             {
@@ -80,7 +81,7 @@ namespace QGUI
 
         private static void OnCreate()
         {
-            string resourceFile = "Assets/" + QCreateScriptsConfigure.resourceFile;
+            string resourceFile = QCreateScriptsConfigure.resourceFile;
 
             var endNameEditAction =
                 ScriptableObject.CreateInstance<QDoCreateScript>();
@@ -112,6 +113,17 @@ namespace QGUI
             foreach (var obj in Selection.gameObjects)
             {
                 Object.DestroyImmediate( obj.GetComponent<QMarkupField>());
+            }
+        }
+
+        private static void ShowWindow()
+        {
+            if (isSelectChanaged)
+            {
+                if (isOne && current.IsKeyDown(KeyCode.Escape))
+                {
+                    PopupWindow.Show(new Rect(new Vector2(current.mousePosition.x + 10, current.mousePosition.y + 10), Vector2.zero), menu);
+                }
             }
         }
     }

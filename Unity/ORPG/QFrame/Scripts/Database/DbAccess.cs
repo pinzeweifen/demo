@@ -48,6 +48,7 @@ namespace Database
         {
             OpenDB(connectionString);
         }
+        
         /// <summary>
         /// 连接数据库
         /// </summary>

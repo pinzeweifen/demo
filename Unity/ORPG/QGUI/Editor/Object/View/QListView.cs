@@ -21,12 +21,21 @@ namespace QGUI
 
         protected override void DrawItem(Rect rect, int index)
         {
+            if (Event.current.IsKeyDown(KeyCode.F2))
+            {
+                m_EditorIndex = m_Index;
+                Event.current.Use();
+            }
+
             var item = m_List[index];
             if (m_EditorIndex != index)
+            {
                 GUI.Box(rect, item.Name, m_Index != index ? about : select);
+            }
             else
+            {
                 item.Name = GUI.TextField(rect, item.Name);
-            
+            }
         }
 
         /*

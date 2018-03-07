@@ -31,7 +31,13 @@ namespace QGUI
         {
             m_Value = AssetDatabase.LoadAssetAtPath<Sprite>(path);
             if (m_Value == null)
-                m_Value = new Sprite();
+            {
+                m_Value = (Sprite)Resources.LoadAsync<Sprite>(path).asset;
+
+                if(m_Value==null)
+                    m_Value = new Sprite();
+            }
+                
         }
 
         protected override void PaintEvent(Event current, Rect rect)

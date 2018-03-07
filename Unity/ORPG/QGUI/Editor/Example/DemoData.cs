@@ -158,6 +158,8 @@ public partial class Demo
     /// <returns></returns>
     private string[] WriteDatabase(IArticle article)
     {
-        return new string[] { article.ID.ToString(), article.Name, article.Icon, article.Price.ToString() };
+        var tmp = article.Icon.Remove(0, article.Icon.IndexOf("Resources/") + 10);
+        tmp = tmp.Remove(tmp.LastIndexOf('.'));
+        return new string[] { article.ID.ToString(), article.Name, tmp, article.Price.ToString() };
     }
 }
