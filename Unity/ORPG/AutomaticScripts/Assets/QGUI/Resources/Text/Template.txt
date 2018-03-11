@@ -1,0 +1,25 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public partial class {0} : MonoBehaviour {{
+
+{1}
+}}
+
+public partial class {0}{{
+    private void Awake()
+    {{
+{2}  
+    }}
+
+	private void OnDestroy()
+    {{
+{3}
+    }}
+}}
+
+public partial class {0}{{
+{4}
+}}

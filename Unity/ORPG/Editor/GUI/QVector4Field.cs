@@ -1,0 +1,42 @@
+﻿using UnityEditor;
+using UnityEngine;
+
+namespace QRPG.GUIEditor
+{
+    public class QVector4Field : QWidget, IQWidget
+    {
+        protected Vector4 m_Value;
+
+        public Vector4 Value { get { return m_Value; } set { m_Value = value; } }
+
+        public QVector4Field(EditorWindow window, IQObject parent = null) : base(window, parent)
+        {
+        }
+
+        public QVector4Field(EditorWindow window, string name, IQObject parent = null) : base(window, name, parent)
+        {
+        }
+
+        protected override void PaintEvent(Event current, Rect rect)
+        {
+            m_Value = EditorGUI.Vector4Field(rect, m_Name, m_Value);
+        }
+
+        public override IQObject Clone()
+        {
+            QVector4Field clone = base.Clone() as QVector4Field;
+            clone.m_Value = m_Value;
+            return clone;
+        }
+    }
+
+    public static partial class QWidgetTo
+    {
+        public static QVector4Field ToVector4Field(this IQWidget widget)
+        {
+            if (widget is QVector4Field)
+                return widget as QVector4Field;
+            return null;
+        }
+    }
+}
