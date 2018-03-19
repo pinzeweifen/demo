@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replacement Dress", "Replacement Dress.csproj", "{5BEB07DC-B8F5-0CBD-2A52-E904F8E6BB69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BEB07DC-B8F5-0CBD-2A52-E904F8E6BB69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BEB07DC-B8F5-0CBD-2A52-E904F8E6BB69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BEB07DC-B8F5-0CBD-2A52-E904F8E6BB69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BEB07DC-B8F5-0CBD-2A52-E904F8E6BB69}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
